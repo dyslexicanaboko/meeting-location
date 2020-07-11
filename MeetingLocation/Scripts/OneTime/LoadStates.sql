@@ -1,5 +1,7 @@
-﻿CREATE TABLE #temptable ( [StateId] int, [Name] varchar(50) )
-INSERT INTO #temptable
+﻿if OBJECT_ID('tempdb..#tmpStates') is not null DROP TABLE #tmpStates
+
+CREATE TABLE #tmpStates ( [StateId] int, [Name] varchar(50) )
+INSERT INTO #tmpStates
 VALUES
 ( 1, 'Alabama' ), 
 ( 2, 'Alaska' ), 
@@ -55,6 +57,6 @@ VALUES
 INSERT INTO dbo.[State] ([Name])
 SELECT
 	[Name]
-FROM #temptable
+FROM #tmpStates
 
-DROP TABLE #temptable
+DROP TABLE #tmpStates

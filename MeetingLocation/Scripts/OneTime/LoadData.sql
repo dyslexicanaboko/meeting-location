@@ -9,6 +9,8 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
+USE MeetingLocation
+
 :r .\LoadStates.sql
 
 :r .\LoadCities.sql
