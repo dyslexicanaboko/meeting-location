@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[State]
+(
+	[StateId] [INT] IDENTITY(1,1) NOT NULL,
+	[Name] [VARCHAR](50) NOT NULL,
+	CONSTRAINT [PK_dbo.State_StateId] PRIMARY KEY CLUSTERED ([StateId] ASC),
+	CONSTRAINT [UK_dbo.State_Name] UNIQUE NONCLUSTERED ([Name] ASC)
+)
