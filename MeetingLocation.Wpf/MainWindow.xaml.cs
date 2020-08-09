@@ -1,4 +1,5 @@
 ﻿using MeetingLocation.Wpf.Data;
+using MeetingLocation.Wpf.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,23 +32,9 @@ namespace MeetingLocation.Wpf
         {
             var context = new MeetingLocationModelFactory().CreateDbContext(null);
 
-            var smallestUseCounter = context.Cities.Min(x => x.UseCounter);
+            var repo = new CityRepository(context);
 
-            var randomCity = context
-                .Cities
-                .Include(x => x.State)
-                .Where(x => x.UseCounter == smallestUseCounter)
-                .OrderBy(x => Guid.NewGuid())
-                .First();
-
-            var c = randomCity;
-
-            c.LastUsed = DateTime.Now;
-            c.UseCounter++;
-
-            context.SaveChanges();
-
-            var meetingLocation = $"{c.Name}, {c.State.Name}";
+            var meetingLocation = repo.GetRandomMeetingLocation();
 
             TxtMeetingLocation.Text = meetingLocation;
         }
