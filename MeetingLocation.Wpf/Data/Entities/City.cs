@@ -17,7 +17,7 @@ namespace MeetingLocation.Wpf.Data.Entities
         
         public int UseCounter { get; set; }
 
-        public DateTime LastUsed { get; set; }
+        public DateTime? LastUsed { get; set; }
         
         public DateTime CreatedOn { get; set; }
 

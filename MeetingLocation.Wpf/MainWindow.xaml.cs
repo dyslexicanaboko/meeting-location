@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MeetingLocation.Wpf.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,31 @@ namespace MeetingLocation.Wpf
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void BtnMeetingLocation_Click(object sender, RoutedEventArgs e)
+        {
+            var context = new MeetingLocationModelFactory().CreateDbContext(null);
+
+            var smallestUseCounter = context.Cities.Min(x => x.UseCounter);
+
+            var randomCity = context
+                .Cities
+                .Include(x => x.State)
+                .Where(x => x.UseCounter == smallestUseCounter)
+                .OrderBy(x => Guid.NewGuid())
+                .First();
+
+            var c = randomCity;
+
+            c.LastUsed = DateTime.Now;
+            c.UseCounter++;
+
+            context.SaveChanges();
+
+            var meetingLocation = $"{c.Name}, {c.State.Name}";
+
+            TxtMeetingLocation.Text = meetingLocation;
         }
     }
 }

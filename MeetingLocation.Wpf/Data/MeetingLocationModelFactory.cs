@@ -43,7 +43,7 @@ namespace MeetingLocation.Wpf.Data
 
             try
             {
-                connectionString = configuration.GetConnectionString("ProMassSpammer");
+                connectionString = configuration.GetConnectionString("MeetingLocation");
             }
             catch
             {

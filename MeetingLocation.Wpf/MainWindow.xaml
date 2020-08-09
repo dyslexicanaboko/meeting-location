@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Label x:Name="LblMeetingLocation" Content="Meeting location" HorizontalAlignment="Left" Margin="98,122,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="TxtMeetingLocation" HorizontalAlignment="Left" Margin="216,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="214" IsReadOnly="True" AutomationProperties.HelpText="Click button for next meeting location" Text="Click button for next meeting location"/>
+        <Button x:Name="BtnMeetingLocation" Content="Get meeting location" HorizontalAlignment="Left" Margin="98,161,0,0" VerticalAlignment="Top" Width="332" Height="56" Click="BtnMeetingLocation_Click"/>
     </Grid>
 </Window>
