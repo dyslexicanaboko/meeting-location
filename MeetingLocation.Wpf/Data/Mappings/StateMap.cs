@@ -7,7 +7,6 @@ namespace MeetingLocation.Wpf.Data.Mappings
     public class StateMap
         : IEntityTypeConfiguration<State>
     {
-        //Modeled after: https://github.com/nlog/NLog/wiki/Database-target
         public void Configure(EntityTypeBuilder<State> builder)
         {
             var b = builder;
@@ -24,6 +23,14 @@ namespace MeetingLocation.Wpf.Data.Mappings
             b.Property(e => e.CreatedOn)
                 .HasColumnType("datetime2(7)")
                 .HasDefaultValueSql("getdate()")
+                .IsRequired();
+
+            //1 StateId -> * CityId
+            //Don't specify the key name here because this is not where the FK exists
+            //This is only for the navigation property definition
+            b.HasMany(x => x.Cities)
+                .WithOne(x => x.State)
+                .HasForeignKey(x => x.StateId)
                 .IsRequired();
         }
     }

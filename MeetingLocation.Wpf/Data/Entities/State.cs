@@ -10,7 +10,6 @@ namespace MeetingLocation.Wpf.Data.Entities
             
         }
 
-
         public int StateId { get; set; }
 
         public string Name { get; set; }
