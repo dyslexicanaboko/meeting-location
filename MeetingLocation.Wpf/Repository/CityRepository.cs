@@ -37,12 +37,7 @@ namespace MeetingLocation.Wpf.Repository
         {
             var smallestUseCounter = GetSmallestUseCount();
 
-            var randomCity = _context
-                .Cities
-                .Include(x => x.State)
-                .Where(x => x.UseCounter == smallestUseCounter)
-                .OrderBy(x => Guid.NewGuid())
-                .First();
+            var randomCity = GetRandomCity(smallestUseCounter);
 
             randomCity.UseCounter++;
 
@@ -51,6 +46,37 @@ namespace MeetingLocation.Wpf.Repository
             var meetingLocation = $"{randomCity.Name}, {randomCity.State.Name}";
 
             return meetingLocation;
+        }
+
+        private City GetRandomCity(int smallestUseCounter)
+        {
+            City city;
+
+            if(_context.Database.IsSqlite())
+            {
+                var lst = _context
+                    .Cities
+                    .Include(x => x.State)
+                    .Where(x => x.UseCounter == smallestUseCounter);
+
+                //SQL lite cannot handle the .OrderBy(x => Guid.NewGuid()) methodology
+                city = lst
+                    .ToDictionary(k => Guid.NewGuid(), v => v)
+                    .OrderBy(k => k.Key)
+                    .First()
+                    .Value;
+            }
+            else
+            {
+                city = _context
+                    .Cities
+                    .Include(x => x.State)
+                    .Where(x => x.UseCounter == smallestUseCounter)
+                    .OrderBy(x => Guid.NewGuid())
+                    .First();
+            }
+
+            return city;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MeetingLocation.Wpf.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -44,6 +45,10 @@ namespace MeetingLocation.Wpf.Data
             if (db.IsSqlServer()) return model;
 
             db.EnsureCreated();
+
+            var svc = new SqliteInitialLoad(model);
+
+            svc.LoadData();
 
             return model;
         }
