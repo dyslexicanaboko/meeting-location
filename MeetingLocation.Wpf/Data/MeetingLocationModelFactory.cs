@@ -8,13 +8,14 @@ namespace MeetingLocation.Wpf.Data
     public class MeetingLocationModelFactory
         : IDesignTimeDbContextFactory<MeetingLocationModel>
     {
+        private static bool _useSqlLite;
         private static string _connectionString;
 
         public MeetingLocationModelFactory()
         {
             if (_connectionString != null) return;
 
-            _connectionString = LoadConnectionString();
+            LoadConfiguration();
         }
 
         /* dotnet ef migrations add InitialCreate
@@ -25,36 +26,57 @@ namespace MeetingLocation.Wpf.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<MeetingLocationModel>();
 
-            optionsBuilder
-                .UseSqlServer(_connectionString, providerOptions => providerOptions.CommandTimeout(60));
+            if (_useSqlLite)
+            {
+                optionsBuilder
+                    .UseSqlite(_connectionString, providerOptions => providerOptions.CommandTimeout(60));
+            }
+            else 
+            {
+                optionsBuilder
+                    .UseSqlServer(_connectionString, providerOptions => providerOptions.CommandTimeout(60));
+            }
 
-            return new MeetingLocationModel(optionsBuilder.Options);
+            var model = new MeetingLocationModel(optionsBuilder.Options);
+
+            var db = model.Database;
+
+            if (db.IsSqlServer()) return model;
+
+            db.EnsureCreated();
+
+            return model;
         }
 
-        private static string LoadConnectionString()
+        private static void LoadConfiguration()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
             var configuration = builder.Build();
+            
+            _useSqlLite = UseSqlLite(configuration);
 
-            string connectionString = null;
+            _connectionString = ConnectionString(configuration, _useSqlLite);
+        }
 
-            try
-            {
-                connectionString = configuration.GetConnectionString("MeetingLocation");
-            }
-            catch
-            {
-                //11/01/2018
-                //I hate that I have to do this, but it's Microsoft's fault that this isn't working yet
-                //An exception is thrown when running migrations or running scaffolding
-                //Therefore just grab this hard coded connection string
-                connectionString = "data source=.;initial catalog=MeetingLocation;integrated security=True;multipleactiveresultsets=True;application name=EntityFramework";
-            }
+        private static string ConnectionString(IConfigurationRoot config, bool useSqlite)
+        {
+            var connectionName = $"MeetingLocation{(useSqlite ? "Sqlite" : string.Empty)}";
 
-            return connectionString;
+            var cs = config.GetConnectionString(connectionName);
+
+            return cs;
+        }
+
+        private static bool UseSqlLite(IConfigurationRoot config)
+        {
+            var sc = config
+                .GetSection("UseSqlLite")
+                .Get<bool>();
+
+            return sc;
         }
     }
 }
