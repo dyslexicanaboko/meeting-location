@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MeetingLocation.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Meeting location" Height="186" Width="372">
     <Grid>
-        <Label x:Name="LblMeetingLocation" Content="Meeting location" HorizontalAlignment="Left" Margin="98,122,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="TxtMeetingLocation" HorizontalAlignment="Left" Margin="216,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="214" IsReadOnly="True" AutomationProperties.HelpText="Click button for next meeting location" Text="Click button for next meeting location"/>
-        <Button x:Name="BtnMeetingLocation" Content="Get meeting location" HorizontalAlignment="Left" Margin="98,161,0,0" VerticalAlignment="Top" Width="332" Height="56" Click="BtnMeetingLocation_Click"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="161*"/>
+            <ColumnDefinition Width="211*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="TxtMeetingLocation" HorizontalAlignment="Left" Margin="10,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="347" IsReadOnly="True" AutomationProperties.HelpText="Click button for next meeting location" Text="Click button for next meeting location" FontSize="20" Height="37" Grid.ColumnSpan="2"/>
+        <Button x:Name="BtnMeetingLocation" Content="Get meeting location" HorizontalAlignment="Left" Margin="18,85,0,0" VerticalAlignment="Top" Width="332" Height="56" Click="BtnMeetingLocation_Click" Background="#FFE43232" Foreground="#FFFBF5F5" FontSize="20" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

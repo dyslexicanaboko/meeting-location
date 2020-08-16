@@ -44,10 +44,12 @@ namespace MeetingLocation.Wpf.Data
 
             if (db.IsSqlServer()) return model;
 
+            //Only do these procedures if using Sqlite
             db.EnsureCreated();
 
             var svc = new SqliteInitialLoad(model);
 
+            //Loading data for the first time if and only if tables are empty
             svc.LoadData();
 
             return model;

@@ -54,12 +54,15 @@ namespace MeetingLocation.Wpf.Repository
 
             if(_context.Database.IsSqlite())
             {
+                //In order to replicate what SQL Server is doing taking
+                //all records first then sorting them.
                 var lst = _context
                     .Cities
                     .Include(x => x.State)
                     .Where(x => x.UseCounter == smallestUseCounter);
 
                 //SQL lite cannot handle the .OrderBy(x => Guid.NewGuid()) methodology
+                //Sorting the objects randomly by GUID
                 city = lst
                     .ToDictionary(k => Guid.NewGuid(), v => v)
                     .OrderBy(k => k.Key)
