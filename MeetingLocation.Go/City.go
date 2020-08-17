@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+//City Representation of a City in one of the United States of America
+//Each object maintains the number of times used and when it was used
 type City struct {
 	CityId int
 
@@ -21,6 +23,7 @@ type City struct {
 	State State
 }
 
+//CityToString Print a City struct as a string
 func CityToString(city *City) string {
 	c := city
 

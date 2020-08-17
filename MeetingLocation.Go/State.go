@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+//State Basic representation of a State from the United States of America
 type State struct {
 	StateId int
 
@@ -13,6 +14,7 @@ type State struct {
 	CreatedOn time.Time
 }
 
+//StateToString string representation of a State
 func StateToString(state *State) string {
 	s := state
 

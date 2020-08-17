@@ -7,6 +7,7 @@ import (
 	_ "github.com/denisenkom/go-mssqldb"
 )
 
+//GetState get a state by it's StateId
 func GetState(stateId int) (*State, error) {
 	ctx := context.Background()
 

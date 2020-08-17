@@ -9,6 +9,7 @@ import (
 	_ "github.com/denisenkom/go-mssqldb"
 )
 
+//GetSmallestUseCount Find the smallest use count in order to filter on that
 func GetSmallestUseCount() (int, error) {
 	ctx := context.Background()
 
@@ -48,6 +49,8 @@ func GetSmallestUseCount() (int, error) {
 	return smallestUseCounter, nil
 }
 
+//GetRandomCity Get a random city out of the batch of cities with the lowest use to ensure
+//that all cities are used equally but at a random rate.
 func GetRandomCity(smallestUseCounter int) (*City, error) {
 	ctx := context.Background()
 
@@ -94,6 +97,8 @@ func GetRandomCity(smallestUseCounter int) (*City, error) {
 	return &c, nil
 }
 
+//IncrementCityUse Increment the UseCounter of a target city and update the LastUsed time stamp.
+//Lastly update the city record so that this city is taken out of the immediate usage pool
 func IncrementCityUse(city *City) (int64, error) {
 	ctx := context.Background()
 
