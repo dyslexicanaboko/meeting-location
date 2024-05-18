@@ -17,25 +17,32 @@ print("Return a random meeting location")
 -- local state = mState.new(-1, "Florida")
 -- state:Print()
 
+local mState = require("Entities.StateEntity")
+local mCity = require("Entities.CityEntity")
+local mLoadDataService = require("Services.LoadDataService")
+
 function PrintTable(tbl)
   for i = 1, #tbl do
     tbl[i]:Print()
   end
 end
 
-local mState = require("Entities.StateEntity")
-local mCity = require("Entities.CityEntity")
+function EntityTest()  
+  mState.new(1, "Alabama")
+  
+  local states = mState.GetAll()
+  
+  PrintTable(states)
+  
+  mCity.new(1, 1, "Alexander City")
+  mCity.new(2, 1, "Andalusia")
+  mCity.new(3, 1, "Anniston")
+  mCity.new(4, 1, "Athens")
+  mCity.new(5, 1, "Atmore")
+  
+  PrintTable(mCity.GetAll())
+end
 
-mState.new(1, "Alabama")
+local svcStates = mLoadDataService.GetStatesService()
 
-local states = mState.GetAll()
-
-PrintTable(states)
-
-mCity.new(1, 1, "Alexander City")
-mCity.new(2, 1, "Andalusia")
-mCity.new(3, 1, "Anniston")
-mCity.new(4, 1, "Athens")
-mCity.new(5, 1, "Atmore")
-
-PrintTable(mCity.GetAll())
+PrintTable(svcStates.GetAll())
