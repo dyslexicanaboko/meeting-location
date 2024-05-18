@@ -13,12 +13,14 @@ function module.GetAll()
 	return collection
 end
 
-function module.GetById(id)
-	local entity = table.find(collection, function(item)
-    return item.Id == id
-  end)
-	
-	return entity
+function module.GetById(stateId)
+	for _, entity in ipairs(collection) do
+    if entity.StateId == stateId then
+      return entity
+    end
+  end
+  
+	return nil
 end
 
 function module.Remove(id)

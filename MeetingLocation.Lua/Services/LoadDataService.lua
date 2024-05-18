@@ -13,7 +13,8 @@
 
 local mStateEntity = require("Entities.StateEntity")
 local mStateService = require("Services.StateService")
-local mCity = require("Entities.CityEntity")
+local mCityEntity = require("Entities.CityEntity")
+local mCityService = require("Services.CityService")
 local cjson = require("cjson")
 local module = {}
 
@@ -51,6 +52,26 @@ function module.GetStatesService()
   end
 
   return mStateService
+end
+
+function module.GetCityService()
+  local content = ReadFile("Cities.json")
+
+  local entities = cjson.decode(content)
+
+  for i = 1, #entities do
+    mCityService.Add(mCityEntity.new(entities[i].CityId, entities[i].StateId, entities[i].Name))
+  end
+
+  return mCityService
+end
+
+function module.LinkCitiesForEachState(svcStates, svcCity)
+  for _, state in ipairs(svcStates.GetAll()) do
+    for _, city in ipairs(svcCity.GetByStateId(state.StateId)) do
+      state:AddCity(city)
+    end
+  end
 end
 
 return module
