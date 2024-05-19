@@ -22,6 +22,10 @@ local svcCity = mLoadDataService.GetCityService()
 
 mLoadDataService.LinkCitiesForEachState(svcStates, svcCity)
 
-local state = svcStates.GetById(1)
+-- local state = svcStates.GetRandomState()
 
-state:PrintCities()
+-- state:PrintCities()
+
+local meetingLocation = svcStates.GetRandomMeetingLocation()
+
+print(meetingLocation)

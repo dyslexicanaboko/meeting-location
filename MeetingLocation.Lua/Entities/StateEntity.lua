@@ -9,6 +9,8 @@ function module.new(stateId, name)
   entity.StateId = stateId
   entity.Name = name
 	entity.Cities = {}
+	entity.CityIdMin = nil
+	entity.CityIdMax = nil
 
 	setmetatable({}, entity.Cities)
 
@@ -17,6 +19,14 @@ end
 
 function module:AddCity(city)
 	table.insert(self.Cities, city)
+
+	if self.CityIdMin == nil or city.CityId < self.CityIdMin then
+		self.CityIdMin = city.CityId
+	end
+
+	if self.CityIdMax == nil or city.CityId > self.CityIdMax then
+		self.CityIdMax = city.CityId
+	end
 end
 
 function module:Print()
