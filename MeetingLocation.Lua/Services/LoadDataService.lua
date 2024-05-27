@@ -21,12 +21,12 @@ local module = {}
 module.__index = module
 
 -- This is for debug. Shows the current path. nil if it is root
-function script_path()
+local function script_path()
   local str = debug.getinfo(2, "S").source:sub(2)
   return str:match("(.*/)")
 end
 
-function ReadFile(fileName)
+local function ReadFile(fileName)
   --print(script_path())
   
   local file = io.open("./Data/" .. fileName, "r")

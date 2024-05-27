@@ -32,7 +32,7 @@ function module.GetRandomState()
 	return module.GetById(stateId)
 end
 
-function GetRandomCity(state)
+local function GetRandomCity(state)
   math.randomseed(os.time())
 
 	-- I know that the Ids are sequential so I can get away with just using 1 and max collection size

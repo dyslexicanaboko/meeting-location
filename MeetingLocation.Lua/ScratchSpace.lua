@@ -19,5 +19,24 @@ function ReadFile(fileName)
   return content
 end
 
-print(ReadFile("States.json"))
+--print(ReadFile("States.json"))
 
+function dbTest()
+  local sqlite3 = require('lsqlite3complete')
+
+  local db = sqlite3.open('MeetingLocation.db')
+
+  -- db:exec[=[
+  --         CREATE TABLE numbers(num1,num2);
+  --         INSERT INTO numbers VALUES(1,11);
+  --         INSERT INTO numbers VALUES(2,22);
+  --         INSERT INTO numbers VALUES(3,33);
+  --       ]=]
+        
+  for a in db:nrows('SELECT * FROM numbers') do print(a) end
+
+  db:close()
+end
+
+local num = 0
+num = num + 1
