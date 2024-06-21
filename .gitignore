@@ -351,3 +351,5 @@ MigrationBackup/
 
 # Custom
 *.db
+*.bak
+**/.idea/
