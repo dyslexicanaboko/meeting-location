@@ -1,8 +1,15 @@
 import json
 import random
+import sqlite3
 
 from Entities.StateEntity import StateEntity
 from Entities.CityEntity import CityEntity
+
+
+def check_existence(cursor, table_name):
+    res = cursor.execute("SELECT name FROM sqlite_master WHERE name = ?", (table_name,))
+
+    return res.fetchone() is not None
 
 
 class LoadDataService:
@@ -52,13 +59,46 @@ class LoadDataService:
         # This isn't necessary to do, I just wanted to see how it could be done. It's always 1 and 50
         random_state_id = random.randint(min_state_id.StateId, max_state_id.StateId)
 
-        lststate = list(filter(lambda x: x.StateId == random_state_id, states))
+        lst_state = list(filter(lambda x: x.StateId == random_state_id, states))
 
         # Random state selected
-        state = lststate[0]
+        state = lst_state[0]
 
         random_city_index = random.randint(0, len(state.Cities) - 1)
 
         city = state.Cities[random_city_index]
 
         return f"{city.Name}, {state.Name}"
+
+    def get_connection(self):
+        con = sqlite3.connect('meetingLocation.db')
+
+        cur = con.cursor()
+
+        if not check_existence(cur, "State"):
+            cur.execute("CREATE TABLE State(StateId INT NOT NULL, Name VARCHAR(50) NOT NULL)")
+
+            states = self.load_states()
+
+            rows = []
+
+            for city in states:
+                rows.append((city.StateId, city.Name))
+
+            cur.executemany("INSERT INTO State(StateId, Name) VALUES (?, ?)", rows)
+            con.commit()
+
+        if not check_existence(cur, "City"):
+            cur.execute("CREATE TABLE City(CityId INT NOT NULL, StateId INT NOT NULL, Name VARCHAR(50) NOT NULL)")
+
+            cities = self.load_cities()
+
+            rows = []
+
+            for city in cities:
+                rows.append((city.CityId, city.StateId, city.Name))
+
+            cur.executemany("INSERT INTO City(CityId, StateId, Name) VALUES (?, ?, ?)", rows)
+            con.commit()
+
+        return con
